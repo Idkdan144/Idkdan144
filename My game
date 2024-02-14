@@ -1,0 +1,110 @@
+class Enemy {
+  constructor(daniel, 100,5) {
+    this.daniel = main;
+    this.100 = 100;
+    this.5 = 5;
+  }
+}
+
+class Player {
+  constructor(hp, potionCount, knifeDamage, gunDamage, potionHeal) {
+    this.hp = hp;
+    this.potionCount = potionCount;
+    this.knifeDamage = knifeDamage;
+    this.gunDamage = gunDamage;
+    this.potionHeal = potionHeal;
+  }
+
+  drinkPotion() {
+    if (this.potionCount > 0) {
+      this.hp += this.potionHeal;
+      if (this.hp > 100) {
+        this.hp = 100;
+      }
+      this.potionCount--;
+    }
+  }
+
+  attackEnemy(enemy, attackType) {
+    if (attackType === "knife") {
+      enemy.hp -= this.knifeDamage;
+      if (this.potionCount > 0) {
+        console.log("You can attack again or use a potion (1 or 2):");
+        const input2 = prompt();
+        if (input2 === "2") {
+          this.drinkPotion();
+          console.log(`Player HP: ${this.hp} Potion count: ${this.potionCount}`);
+          return;
+        }
+      }
+    } else if (attackType === "gun") {
+      enemy.hp -= this.gunDamage;
+    }
+
+    if (enemy.hp > 0) {
+      console.log(`Enemy HP: ${enemy.hp}`);
+    } else {
+      console.log(`${enemy.name} is defeated!`);
+    }
+  }
+}
+
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createEnemyStats(enemyTypes) {
+  const enemyStatsText = [];
+  const minHealth = 25;
+  const maxHealth = 70;
+  const minDamage = 15;
+  const maxDamage = 25;
+
+  for (let i = 0; i < enemyTypes.length; i++) {
+    enemyStatsText.push(
+      new Enemy(
+        enemyTypes[i],
+        randomNumber(minHealth, maxHealth),
+        randomNumber(minDamage, maxDamage)
+      )
+    );
+  }
+
+  return enemyStatsText;
+}
+
+function main() {
+  const enemyTypes = [
+    "Skeleton",
+    "Giant",
+    "Goblin",
+    "Demon",
+    "Defeated Knight",
+    "Warrior",
+    "Demon Lord"
+  ];
+  const enemyStatsText = createEnemyStats(enemyTypes);
+  const player = new Player(150, 3, 15, 20, 30);
+
+  console.log("How many rounds do you want to play?");
+  const maxRound = parseInt(prompt());
+  let roundCount = 0;
+
+  for (roundCount = 1; roundCount < maxRound; roundCount++) {
+    const enemies = chooseEnemies(enemyStatsText);
+    roundStart(enemies, player, roundCount);
+  }
+}
+
+function chooseEnemies(enemyStatsText) {
+  const enemies = [];
+  enemies[0] = enemyStatsText[randomNumber(0, enemyStatsText.length - 1)];
+  enemies[1] = enemyStatsText[randomNumber(0, enemyStatsText.length - 1)];
+  return enemies;
+}
+
+function roundStart(enemies, player, roundCount) {
+  console.log(`Round ${roundCount} is starting!`);
+  console.log(`Player HP: ${player.hp}`);
+
+  while (true
